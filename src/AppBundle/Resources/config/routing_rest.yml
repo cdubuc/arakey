@@ -1,0 +1,4 @@
+cars :
+    type: rest
+    resource: AppBundle\Controller\Car
+    name_prefix:  api_
