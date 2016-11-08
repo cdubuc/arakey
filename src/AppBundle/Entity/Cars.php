@@ -45,7 +45,7 @@ class Cars
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Equipments")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Equipments", inversedBy="carE")
      * @ORM\JoinTable(name="car_equipments",
      *   joinColumns={
      *     @ORM\JoinColumn(name="car_e_id", referencedColumnName="id")
@@ -60,7 +60,7 @@ class Cars
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Equipments")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Equipments", inversedBy="carO")
      * @ORM\JoinTable(name="car_options",
      *   joinColumns={
      *     @ORM\JoinColumn(name="car_o_id", referencedColumnName="id")
@@ -90,16 +90,177 @@ class Cars
         }
     }
 
-    public function getMaker() {
+    /**
+     * Set maker
+     *
+     * @param string $maker
+     *
+     * @return Cars
+     */
+    public function setMaker($maker)
+    {
+        $this->maker = $maker;
+
+        return $this;
+    }
+
+    /**
+     * Set model
+     *
+     * @param string $model
+     *
+     * @return Cars
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return Cars
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Add equip
+     *
+     * @param \AppBundle\Entity\Equipments $equip
+     *
+     * @return Cars
+     */
+    public function addEquip(\AppBundle\Entity\Equipments $equip)
+    {
+        $this->equip[] = $equip;
+
+        return $this;
+    }
+
+    /**
+     * Reset equip
+     *
+     * @return Cars
+     */
+    public function resetEquip()
+    {
+        $this->equip = array();
+
+        return $this;
+    }
+
+    /**
+     * Remove equip
+     *
+     * @param \AppBundle\Entity\Equipments $equip
+     */
+    public function removeEquip(\AppBundle\Entity\Equipments $equip)
+    {
+        $this->equip->removeElement($equip);
+    }
+
+    /**
+     * Get equip
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEquip()
+    {
+        return $this->equip;
+    }
+
+    /**
+     * Add option
+     *
+     * @param \AppBundle\Entity\Equipments $option
+     *
+     * @return Cars
+     */
+    public function addOption(\AppBundle\Entity\Equipments $option)
+    {
+        $this->option[] = $option;
+
+        return $this;
+    }
+
+    /**
+     * Remove option
+     *
+     * @param \AppBundle\Entity\Equipments $option
+     */
+    public function removeOption(\AppBundle\Entity\Equipments $option)
+    {
+        $this->option->removeElement($option);
+    }
+
+    /**
+     * Reset optio
+     *
+     * @return Cars
+     */
+    public function resetOption()
+    {
+        $this->option = array();
+
+        return $this;
+    }
+
+    /**
+     * Get option
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOption()
+    {
+        return $this->option;
+    }
+
+    /**
+     * Get maker
+     *
+     * @return string
+     */
+    public function getMaker()
+    {
         return $this->maker;
     }
 
-    public function getModel() {
+    /**
+     * Get model
+     *
+     * @return string
+     */
+    public function getModel()
+    {
         return $this->model;
     }
 
-    public function getPrice() {
+    /**
+     * Get price
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
         return $this->price;
     }
 }
-

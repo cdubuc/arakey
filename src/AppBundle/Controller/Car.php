@@ -13,6 +13,8 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\Put;
+use FOS\RestBundle\Controller\Annotations\Patch;
 use AppBundle\Entity\Cars;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -71,6 +73,130 @@ class Car extends FOSRestController
                     }
                 }
                 $this->entityNotExists(new Cars($oParams->maker, $oParams->model, $oParams->price, $aEquip, $aOptions));
+                $this->oEM->flush();
+                $aData = array('OK');
+                $aReturn['code'] = 200;
+                $aReturn['status'] = 'OK';
+                $aReturn['message'] = '';
+                $aReturn['data'] = $aData;
+            } else {
+                $aReturn['code'] = 503;
+                $aReturn['status'] = 'NOK';
+                $aReturn['message'] = 'Params Error.';
+                $aReturn['data'] = '';
+            }
+        } catch (Exception $e) {
+            $aReturn['code'] = 503;
+            $aReturn['status'] = 'NOK';
+            $aReturn['message'] = $e->getMessage();
+            $aReturn['data'] = '';
+        }
+        return $aReturn;
+    }
+
+    /**
+     * @Put("/api/putCar", name="updateCar", defaults={"_format"="json"})
+     */
+    function putCar() {
+        $this->oEM = $this->getDoctrine()->getManager();
+        $oRequest = Request::createFromGlobals();
+        $oParams = json_decode($oRequest->getContent());
+        try {
+            if (false === empty($oParams)) {
+                if (false === isset($oParams->id) || 0 >= intval($oParams->id)) {
+                    throw $this->createNotFoundException('Not Found');
+                }
+                $iCarId = $oParams->id;
+                $oCar = $this->oEM->getRepository('AppBundle:Cars')->find($iCarId);
+                if (true === is_null($oCar)) {
+                    throw $this->createNotFoundException('Not Found');
+                }
+                $oCar->resetEquip();
+                $oCar->resetOption();
+                if (true === is_array($oParams->equip)) {
+                    foreach ($oParams->equip as $iEquip) {
+                        $oCar->addEquip($this->oEM->getRepository('AppBundle:Equipments')->find($iEquip));
+                    }
+                }
+                if (true === is_array($oParams->options)) {
+                    foreach ($oParams->options as $iOption) {
+                        $oCar->addOption($this->oEM->getRepository('AppBundle:Equipments')->find($iOption));
+                    }
+                }
+                if (true === isset($oParams->maker)) {
+                    $oCar->setMaker($oParams->maker);
+                } else {
+                    $oCar->setMaker(null);
+                }
+                if (true === isset($oParams->model)) {
+                    $oCar->setModel($oParams->model);
+                } else {
+                    $oCar->setModel(null);
+                }
+                if (true === isset($oParams->price)) {
+                    $oCar->setPrice($oParams->price);
+                } else {
+                    $oCar->setPrice(null);
+                }
+                $this->oEM->flush();
+                $aData = array('OK');
+                $aReturn['code'] = 200;
+                $aReturn['status'] = 'OK';
+                $aReturn['message'] = '';
+                $aReturn['data'] = $aData;
+            } else {
+                $aReturn['code'] = 503;
+                $aReturn['status'] = 'NOK';
+                $aReturn['message'] = 'Params Error.';
+                $aReturn['data'] = '';
+            }
+        } catch (Exception $e) {
+            $aReturn['code'] = 503;
+            $aReturn['status'] = 'NOK';
+            $aReturn['message'] = $e->getMessage();
+            $aReturn['data'] = '';
+        }
+        return $aReturn;
+    }
+
+    /**
+     * @Patch("/api/patchCar", name="patchCar", defaults={"_format"="json"})
+     */
+    function patchCar() {
+        $this->oEM = $this->getDoctrine()->getManager();
+        $oRequest = Request::createFromGlobals();
+        $oParams = json_decode($oRequest->getContent());
+        try {
+            if (false === empty($oParams)) {
+                if (false === isset($oParams->id) || 0 >= intval($oParams->id)) {
+                    throw $this->createNotFoundException('Not Found');
+                }
+                $iCarId = $oParams->id;
+                $oCar = $this->oEM->getRepository('AppBundle:Cars')->find($iCarId);
+                if (true === is_null($oCar)) {
+                    throw $this->createNotFoundException('Not Found');
+                }
+                if (true === is_array($oParams->equip)) {
+                    $oCar->resetEquip();
+                    foreach ($oParams->equip as $iEquip) {
+                        $oCar->addEquip($this->oEM->getRepository('AppBundle:Equipments')->find($iEquip));
+                    }
+                }
+                if (true === is_array($oParams->options)) {
+                    $oCar->resetOption();
+                    foreach ($oParams->options as $iOption) {
+                        $oCar->addOption($this->oEM->getRepository('AppBundle:Equipments')->find($iOption));
+                    }
+                }
+                if (true === isset($oParams->maker)) {
+                    $oCar->setMaker($oParams->maker);
+                }
+                if (true === isset($oParams->model)) {
+                    $oCar->setModel($oParams->model);
+                }
+                if (true === isset($oParams->price)) {
+                    $oCar->setPrice($oParams->price);
+                }
                 $this->oEM->flush();
                 $aData = array('OK');
                 $aReturn['code'] = 200;
