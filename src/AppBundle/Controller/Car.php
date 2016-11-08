@@ -40,7 +40,7 @@ class Car extends FOSRestController
     }
 
     /**
-     * @Get("/api/getCar/{iCarId}", name="Car", defaults={"_format"="json"})
+     * @Get("/api/getCar/{iCarId}", name="getCar", defaults={"_format"="json"})
      */
     function getCar($iCarId) {
         $iCarId = intval($iCarId);
@@ -49,6 +49,23 @@ class Car extends FOSRestController
         }
         $this->oEM = $this->getDoctrine()->getManager();
         return $this->oEM->getRepository('AppBundle:Cars')->find($iCarId);
+    }
+
+    /**
+     * @Delete("/api/deleteCar/{iCarId}", name="deleteCar", defaults={"_format"="json"})
+     */
+    function deleteCar($iCarId) {
+        $iCarId = intval($iCarId);
+        if (0 >= $iCarId) {
+            throw $this->createNotFoundException('Invalid Params');
+        }
+        $this->oEM = $this->getDoctrine()->getManager();
+        $oCar = $this->oEM->getRepository('AppBundle:Cars')->find($iCarId);
+        if (true === is_null($oCar)) {
+            throw $this->createNotFoundException('Not Found');
+        }
+        $this->oEM->remove($oCar);
+        $this->oEM->flush();
     }
 
     /**
