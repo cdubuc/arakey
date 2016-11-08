@@ -131,12 +131,12 @@ class Car extends FOSRestController
                 }
                 $oCar->resetEquip();
                 $oCar->resetOption();
-                if (true === is_array($oParams->equip)) {
+                if (true === isset($oParams->equip) && true === is_array($oParams->equip)) {
                     foreach ($oParams->equip as $iEquip) {
                         $oCar->addEquip($this->oEM->getRepository('AppBundle:Equipments')->find($iEquip));
                     }
                 }
-                if (true === is_array($oParams->options)) {
+                if (true === isset($oParams->options) && true === is_array($oParams->options)) {
                     foreach ($oParams->options as $iOption) {
                         $oCar->addOption($this->oEM->getRepository('AppBundle:Equipments')->find($iOption));
                     }
@@ -194,13 +194,13 @@ class Car extends FOSRestController
                 if (true === is_null($oCar)) {
                     throw $this->createNotFoundException('Not Found');
                 }
-                if (true === is_array($oParams->equip)) {
+                if (true === isset($oParams->equip) && true === is_array($oParams->equip)) {
                     $oCar->resetEquip();
                     foreach ($oParams->equip as $iEquip) {
                         $oCar->addEquip($this->oEM->getRepository('AppBundle:Equipments')->find($iEquip));
                     }
                 }
-                if (true === is_array($oParams->options)) {
+                if (true === isset($oParams->options) && true === is_array($oParams->options)) {
                     $oCar->resetOption();
                     foreach ($oParams->options as $iOption) {
                         $oCar->addOption($this->oEM->getRepository('AppBundle:Equipments')->find($iOption));
