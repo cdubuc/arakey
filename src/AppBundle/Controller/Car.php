@@ -32,6 +32,7 @@ class Car extends FOSRestController
      * @Get("/api/getAllCars", name="AllCars", defaults={"_format"="json"})
      */
     function getAllCars() {
+        // ToDo : write custom query or tune many to many association to avoid loops on get and loading useless data.
         $this->oEM = $this->getDoctrine()->getManager();
         $mRes = $this->oEM->getRepository('AppBundle:Cars')->findAll();
         if (true === empty($mRes)) {
@@ -67,6 +68,12 @@ class Car extends FOSRestController
         }
         $this->oEM->remove($oCar);
         $this->oEM->flush();
+        $aData = array('OK');
+        $aReturn['code'] = 200;
+        $aReturn['status'] = 'OK';
+        $aReturn['message'] = '';
+        $aReturn['data'] = $aData;
+        return $aReturn;
     }
 
     /**
