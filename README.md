@@ -1,68 +1,61 @@
-Symfony Standard Edition
+Aramis test
 ========================
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+Here is a code sample to respond to this test :
+Écrire une API REST en Symfony3, respectant les principes du REST en implémentant correctement les verbes GET, POST, PUT, DELETE et PATCH.
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+L’API devra utiliser une base sqli.
 
-What's inside?
+Le but de l’API est de permettre la gestion basique d’une liste de véhicule.
+
+Le développement devra être fait dans un dépôt github publique, et contenir un README contenant toutes les instructions pour installer l’application et consommer l’API.
+
+Voici un exemple de Json pour décrire un véhicule
+
+{
+"car": {
+   "maker": "Peugeot",
+   "model": "505",
+   "price" : "19501",
+   "equipment": [
+     "jante",
+     "clim"
+   ],
+   "option": [
+     "lève vitre électrique",
+     "toit panoramique"
+   ]
+}
+}
+
+Install Notes
 --------------
 
-The Symfony Standard Edition is configured with the following defaults:
+Nothing to complicated here.
+After cloning the project :
+ * "composer install" to install all dependancies
+ * create db "aramis-keyman"
+ * create user arakey with password from config file or update it.
+ * load db file aramis-keyman.sql for structure and sample data.
 
-  * An AppBundle you can use to start coding;
+ Usage
+ --------------
+ Here are the differents methods available on the API using curl :
 
-  * Twig as the only configured template engine;
+ #Get car list
+ curl -X GET 'http://127.0.0.1:4321/api/getAllCars' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json' | json_pp
 
-  * Doctrine ORM/DBAL;
+ #Get specific car
+ curl -X GET 'http://127.0.0.1:4321/api/getCar/1' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json' | json_pp
 
-  * Swiftmailer;
+ #Create car
+ curl -X POST 'http://127.0.0.1:4321/api/postCar' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json' -d'{"maker":"Pigeot","model":"12010","price":"42","equip":[1], "options":[2]}'
 
-  * Annotations enabled for everything.
+ #Update whole car
+ curl -X PUT 'http://127.0.0.1:4321/api/putCar' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json' -d'{"id":"1","model":"Megane 2 RS","maker":"Renault Sport","price":"35000"}'
 
-It comes pre-configured with the following bundles:
+ #Update car
+ curl -X PATCH 'http://127.0.0.1:4321/api/patchCar' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json' -d'{"id":"1","model":"Megane 2 RS"}'
 
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.0/book/installation.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.0/book/doctrine.html
-[8]:  https://symfony.com/doc/3.0/book/templating.html
-[9]:  https://symfony.com/doc/3.0/book/security.html
-[10]: https://symfony.com/doc/3.0/cookbook/email.html
-[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
-[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
+ #Delete car
+ curl -X DELETE 'http://127.0.0.1:4321/api/deleteCar/6' -H 'Pragma: no-cache' -H 'Origin: http://127.0.0.1:4321' -H 'Accept-Encoding: deflate' -H 'Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36' -H 'Accept: application/json' -H 'X-Requested-With: XMLHttpRequest' -H 'Content-type: application/json'
